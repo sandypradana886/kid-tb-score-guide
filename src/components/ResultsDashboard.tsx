@@ -17,37 +17,37 @@ import {
 const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
   const getRiskColor = (level) => {
     switch (level) {
-      case "Low": return "bg-green-100 text-green-800 border-green-200";
-      case "Moderate": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "High": return "bg-red-100 text-red-800 border-red-200";
+      case "Rendah": return "bg-green-100 text-green-800 border-green-200";
+      case "Sedang": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "Tinggi": return "bg-red-100 text-red-800 border-red-200";
       default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   const getRecommendations = (riskLevel) => {
     switch (riskLevel) {
-      case "Low":
+      case "Rendah":
         return [
-          "Continue routine monitoring",
-          "Provide preventive education",
-          "Schedule regular follow-ups",
-          "Monitor for symptom development"
+          "Lanjutkan pemantauan rutin",
+          "Berikan edukasi pencegahan",
+          "Jadwalkan kontrol rutin",
+          "Pantau perkembangan gejala"
         ];
-      case "Moderate":
+      case "Sedang":
         return [
-          "Consider additional investigations",
-          "Close monitoring required",
-          "Evaluate for latent TB infection",
-          "Consider preventive therapy",
-          "Weekly follow-up recommended"
+          "Pertimbangkan investigasi tambahan",
+          "Pemantauan ketat diperlukan",
+          "Evaluasi infeksi TB laten",
+          "Pertimbangkan terapi pencegahan",
+          "Kontrol mingguan direkomendasikan"
         ];
-      case "High":
+      case "Tinggi":
         return [
-          "Urgent clinical evaluation required",
-          "Consider active TB treatment",
-          "Isolation precautions if indicated",
-          "Comprehensive diagnostic workup",
-          "Immediate specialist referral"
+          "Evaluasi klinis mendesak diperlukan",
+          "Pertimbangkan pengobatan TB aktif",
+          "Tindakan isolasi jika diindikasikan",
+          "Pemeriksaan diagnostik komprehensif",
+          "Rujukan spesialis segera"
         ];
       default:
         return [];
@@ -63,10 +63,10 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl flex items-center justify-center">
             <FileText className="h-6 w-6 mr-2 text-blue-600" />
-            Assessment Results
+            Hasil Penilaian
           </CardTitle>
           <CardDescription>
-            Pediatric TB Risk Assessment completed on {new Date(results.assessmentDate).toLocaleDateString()}
+            Penilaian Risiko TB Anak selesai pada {new Date(results.assessmentDate).toLocaleDateString()}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -77,28 +77,30 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <User className="h-5 w-5 mr-2" />
-              Patient Information
+              Informasi Pasien
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
-              <span className="font-medium">Patient ID:</span>
+              <span className="font-medium">ID Pasien:</span>
               <span>{patientData.patientId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Age:</span>
-              <span>{patientData.age} {patientData.ageUnit}</span>
+              <span className="font-medium">Usia:</span>
+              <span>{patientData.age} {patientData.ageUnit === 'years' ? 'tahun' : 'bulan'}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Gender:</span>
-              <span className="capitalize">{patientData.gender}</span>
+              <span className="font-medium">Jenis Kelamin:</span>
+              <span>
+                {patientData.gender === 'male' ? 'Laki-laki' : 'Perempuan'}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Weight:</span>
+              <span className="font-medium">Berat Badan:</span>
               <span>{patientData.weight} kg</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Height:</span>
+              <span className="font-medium">Tinggi Badan:</span>
               <span>{patientData.height} cm</span>
             </div>
           </CardContent>
@@ -108,7 +110,7 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="h-5 w-5 mr-2" />
-              Risk Score
+              Skor Risiko
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -117,10 +119,10 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
                 {results.totalScore}/{results.maxPossibleScore}
               </div>
               <div className="text-sm text-gray-600 mb-4">
-                {scorePercentage.toFixed(0)}% of maximum risk score
+                {scorePercentage.toFixed(0)}% dari skor risiko maksimum
               </div>
               <Badge className={`text-lg px-4 py-2 ${getRiskColor(results.riskLevel.level)}`}>
-                {results.riskLevel.level} Risk
+                Risiko {results.riskLevel.level}
               </Badge>
             </div>
           </CardContent>
@@ -129,15 +131,15 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
 
       {/* Risk Alert */}
       <Alert className={`border-l-4 ${
-        results.riskLevel.level === "High" ? "border-l-red-500 bg-red-50" :
-        results.riskLevel.level === "Moderate" ? "border-l-yellow-500 bg-yellow-50" :
+        results.riskLevel.level === "Tinggi" ? "border-l-red-500 bg-red-50" :
+        results.riskLevel.level === "Sedang" ? "border-l-yellow-500 bg-yellow-50" :
         "border-l-green-500 bg-green-50"
       }`}>
         <AlertTriangle className="h-4 w-4" />
         <AlertDescription className="font-medium">
-          {results.riskLevel.level === "High" && "High TB risk detected. Immediate clinical evaluation recommended."}
-          {results.riskLevel.level === "Moderate" && "Moderate TB risk. Close monitoring and additional evaluation may be needed."}
-          {results.riskLevel.level === "Low" && "Low TB risk. Continue routine monitoring and preventive measures."}
+          {results.riskLevel.level === "Tinggi" && "Risiko TB tinggi terdeteksi. Evaluasi klinis segera direkomendasikan."}
+          {results.riskLevel.level === "Sedang" && "Risiko TB sedang. Pemantauan ketat dan evaluasi tambahan mungkin diperlukan."}
+          {results.riskLevel.level === "Rendah" && "Risiko TB rendah. Lanjutkan pemantauan rutin dan tindakan pencegahan."}
         </AlertDescription>
       </Alert>
 
@@ -146,7 +148,7 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-            Clinical Recommendations
+            Rekomendasi Klinis
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -165,11 +167,11 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
       <div className="flex gap-4 justify-center">
         <Button variant="outline" onClick={() => window.print()}>
           <FileText className="h-4 w-4 mr-2" />
-          Print Report
+          Cetak Laporan
         </Button>
         <Button onClick={onNewAssessment} className="bg-blue-600 hover:bg-blue-700">
           <RotateCcw className="h-4 w-4 mr-2" />
-          New Assessment
+          Penilaian Baru
         </Button>
       </div>
     </div>

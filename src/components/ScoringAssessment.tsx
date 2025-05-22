@@ -40,59 +40,59 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
 
   const assessmentCriteria: Category[] = [
     {
-      category: "Clinical History",
+      category: "Riwayat Klinis",
       questions: [
         {
           id: "exposure",
-          question: "History of TB exposure?",
+          question: "Riwayat paparan TB?",
           options: [
-            { value: 0, label: "No known exposure", points: 0 },
-            { value: 1, label: "Household contact", points: 2 },
-            { value: 2, label: "Close contact with infectious TB", points: 3 }
+            { value: 0, label: "Tidak ada paparan yang diketahui", points: 0 },
+            { value: 1, label: "Kontak rumah tangga", points: 2 },
+            { value: 2, label: "Kontak dekat dengan TB menular", points: 3 }
           ]
         },
         {
           id: "symptoms",
-          question: "Duration of symptoms?",
+          question: "Durasi gejala?",
           options: [
-            { value: 0, label: "No symptoms", points: 0 },
-            { value: 1, label: "< 2 weeks", points: 1 },
-            { value: 2, label: "2-4 weeks", points: 2 },
-            { value: 3, label: "> 4 weeks", points: 3 }
+            { value: 0, label: "Tidak ada gejala", points: 0 },
+            { value: 1, label: "< 2 minggu", points: 1 },
+            { value: 2, label: "2-4 minggu", points: 2 },
+            { value: 3, label: "> 4 minggu", points: 3 }
           ]
         }
       ]
     },
     {
-      category: "Physical Examination",
+      category: "Pemeriksaan Fisik",
       questions: [
         {
           id: "nutrition",
-          question: "Nutritional status?",
+          question: "Status gizi?",
           options: [
-            { value: 0, label: "Well nourished", points: 0 },
-            { value: 1, label: "Mild malnutrition", points: 1 },
-            { value: 2, label: "Moderate malnutrition", points: 2 },
-            { value: 3, label: "Severe malnutrition", points: 3 }
+            { value: 0, label: "Gizi baik", points: 0 },
+            { value: 1, label: "Gizi kurang ringan", points: 1 },
+            { value: 2, label: "Gizi kurang sedang", points: 2 },
+            { value: 3, label: "Gizi kurang berat", points: 3 }
           ]
         },
         {
           id: "lymphNodes",
-          question: "Lymphadenopathy?",
+          question: "Limfadenopati?",
           options: [
-            { value: 0, label: "None", points: 0 },
-            { value: 1, label: "< 2cm, mobile", points: 1 },
-            { value: 2, label: "> 2cm or fixed", points: 2 }
+            { value: 0, label: "Tidak ada", points: 0 },
+            { value: 1, label: "< 2cm, mobil", points: 1 },
+            { value: 2, label: "> 2cm atau tetap", points: 2 }
           ]
         }
       ]
     },
     {
-      category: "Investigations",
+      category: "Investigasi",
       questions: [
         {
           id: "tst",
-          question: "Tuberculin Skin Test (TST) result?",
+          question: "Hasil Tes Tuberkulin (TST)?",
           options: [
             { value: 0, label: "< 5mm", points: 0 },
             { value: 1, label: "5-9mm", points: 1 },
@@ -102,12 +102,12 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
         },
         {
           id: "xray",
-          question: "Chest X-ray findings?",
+          question: "Temuan Foto Toraks?",
           options: [
             { value: 0, label: "Normal", points: 0 },
-            { value: 1, label: "Hilar lymphadenopathy", points: 2 },
-            { value: 2, label: "Lung consolidation", points: 3 },
-            { value: 3, label: "Cavitation", points: 4 }
+            { value: 1, label: "Pembesaran kelenjar hilus", points: 2 },
+            { value: 2, label: "Konsolidasi paru", points: 3 },
+            { value: 3, label: "Kavitasi", points: 4 }
           ]
         }
       ]
@@ -157,9 +157,9 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
   };
 
   const getRiskLevel = (score) => {
-    if (score <= 3) return { level: "Low", color: "green" };
-    if (score <= 6) return { level: "Moderate", color: "yellow" };
-    return { level: "High", color: "red" };
+    if (score <= 3) return { level: "Rendah", color: "green" };
+    if (score <= 6) return { level: "Sedang", color: "yellow" };
+    return { level: "Tinggi", color: "red" };
   };
 
   const isAnswered = scores[currentQuestion?.id];
@@ -169,7 +169,7 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
       <Card className="shadow-lg">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between mb-2">
-            <CardTitle className="text-lg sm:text-xl">TB Risk Assessment</CardTitle>
+            <CardTitle className="text-lg sm:text-xl">Penilaian Risiko TB</CardTitle>
             <span className="text-xs sm:text-sm text-gray-500">
               {currentStep + 1} / {allQuestions.length}
             </span>
@@ -199,7 +199,7 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
                   <div className="flex justify-between items-center">
                     <span>{option.label}</span>
                     <span className="text-xs sm:text-sm font-medium text-blue-600">
-                      {option.points} {option.points === 1 ? 'point' : 'points'}
+                      {option.points} {option.points === 1 ? 'poin' : 'poin'}
                     </span>
                   </div>
                 </Label>
@@ -216,7 +216,7 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
               size="sm"
             >
               <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="text-sm">Prev</span>
+              <span className="text-sm">Sebelumnya</span>
             </Button>
             
             <Button
@@ -226,7 +226,7 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
               size="sm"
             >
               <span className="text-sm">
-                {currentStep === allQuestions.length - 1 ? 'Complete' : 'Next'}
+                {currentStep === allQuestions.length - 1 ? 'Selesai' : 'Selanjutnya'}
               </span>
               <ArrowRight className="w-4 h-4 ml-1 sm:ml-2" />
             </Button>

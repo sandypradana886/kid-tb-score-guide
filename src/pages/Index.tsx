@@ -50,10 +50,10 @@ const Index = () => {
             <div className="text-center space-y-3">
               <div className="flex items-center justify-center mb-4">
                 <Stethoscope className="h-8 w-8 sm:h-12 sm:w-12 text-blue-600 mr-2 sm:mr-3" />
-                <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Pediatric TB Scoring</h1>
+                <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Penilaian TB Anak</h1>
               </div>
               <p className="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
-                Professional tuberculosis risk assessment tool for pediatric patients.
+                Alat penilaian risiko tuberkulosis profesional untuk pasien anak.
               </p>
             </div>
 
@@ -64,11 +64,11 @@ const Index = () => {
               >
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mx-auto mb-1 sm:mb-2" />
-                  <CardTitle className="text-sm sm:text-lg">New Assessment</CardTitle>
+                  <CardTitle className="text-sm sm:text-lg">Penilaian Baru</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    Start a new assessment
+                    Mulai penilaian baru
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -79,11 +79,11 @@ const Index = () => {
               >
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <History className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 mx-auto mb-1 sm:mb-2" />
-                  <CardTitle className="text-sm sm:text-lg">Score History</CardTitle>
+                  <CardTitle className="text-sm sm:text-lg">Riwayat Skor</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    View previous assessments
+                    Lihat penilaian sebelumnya
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -91,11 +91,11 @@ const Index = () => {
               <Card className="border-l-4 border-l-purple-500">
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 mx-auto mb-1 sm:mb-2" />
-                  <CardTitle className="text-sm sm:text-lg">Guidelines</CardTitle>
+                  <CardTitle className="text-sm sm:text-lg">Pedoman</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    WHO & CDC guidelines
+                    Pedoman WHO & CDC
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -103,21 +103,21 @@ const Index = () => {
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <Stethoscope className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600 mx-auto mb-1 sm:mb-2" />
-                  <CardTitle className="text-sm sm:text-lg">Resources</CardTitle>
+                  <CardTitle className="text-sm sm:text-lg">Sumber Daya</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    Clinical tools
+                    Alat klinis
                   </CardDescription>
                 </CardContent>
               </Card>
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="text-sm sm:text-lg font-semibold text-blue-900 mb-1 sm:mb-2">Clinical Notice</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-blue-900 mb-1 sm:mb-2">Pemberitahuan Klinis</h3>
               <p className="text-xs sm:text-sm text-blue-800">
-                This tool is designed to assist healthcare professionals in clinical decision-making. 
-                It should not replace clinical judgment or comprehensive patient evaluation.
+                Alat ini dirancang untuk membantu profesional kesehatan dalam pengambilan keputusan klinis. 
+                Ini tidak boleh menggantikan penilaian klinis atau evaluasi pasien yang komprehensif.
               </p>
             </div>
           </div>
