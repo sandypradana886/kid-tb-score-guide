@@ -38,27 +38,68 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [scores, setScores] = useState<Scores>({});
 
+  // Updated assessment criteria based on latest IDAI guidelines
   const assessmentCriteria: Category[] = [
     {
-      category: "Riwayat Klinis",
+      category: "Riwayat dan Kontak",
       questions: [
         {
           id: "exposure",
-          question: "Riwayat paparan TB?",
+          question: "Riwayat kontak/paparan dengan pasien TB?",
           options: [
-            { value: 0, label: "Tidak ada paparan yang diketahui", points: 0 },
-            { value: 1, label: "Kontak rumah tangga", points: 2 },
-            { value: 2, label: "Kontak dekat dengan TB menular", points: 3 }
+            { value: 0, label: "Tidak ada kontak/paparan", points: 0 },
+            { value: 1, label: "Tidak jelas atau tidak diketahui", points: 1 },
+            { value: 2, label: "Kontak dengan pasien TB BTA (-)", points: 2 },
+            { value: 3, label: "Kontak dengan pasien TB BTA (+)", points: 3 }
+          ]
+        }
+      ]
+    },
+    {
+      category: "Uji Tuberkulin",
+      questions: [
+        {
+          id: "tuberculinTest",
+          question: "Hasil Uji Tuberkulin (Mantoux)?",
+          options: [
+            { value: 0, label: "Negatif (< 5mm)", points: 0 },
+            { value: 1, label: "Meragukan (5-9mm)", points: 1 },
+            { value: 2, label: "Positif (≥ 10mm) atau reaksi vesikular", points: 3 }
+          ]
+        }
+      ]
+    },
+    {
+      category: "Status Gizi",
+      questions: [
+        {
+          id: "nutritionalStatus",
+          question: "Berat badan/keadaan gizi?",
+          options: [
+            { value: 0, label: "Gizi baik (BB/TB > 90%)", points: 0 },
+            { value: 1, label: "Gizi kurang (BB/TB 70-90%)", points: 1 },
+            { value: 2, label: "Gizi buruk (BB/TB < 70%)", points: 3 }
+          ]
+        }
+      ]
+    },
+    {
+      category: "Gejala Klinis",
+      questions: [
+        {
+          id: "fever",
+          question: "Demam tanpa sebab jelas ≥ 2 minggu?",
+          options: [
+            { value: 0, label: "Tidak ada", points: 0 },
+            { value: 1, label: "Ada", points: 1 }
           ]
         },
         {
-          id: "symptoms",
-          question: "Durasi gejala?",
+          id: "cough",
+          question: "Batuk kronik ≥ 2 minggu?",
           options: [
-            { value: 0, label: "Tidak ada gejala", points: 0 },
-            { value: 1, label: "< 2 minggu", points: 1 },
-            { value: 2, label: "2-4 minggu", points: 2 },
-            { value: 3, label: "> 4 minggu", points: 3 }
+            { value: 0, label: "Tidak ada", points: 0 },
+            { value: 1, label: "Ada", points: 1 }
           ]
         }
       ]
@@ -67,47 +108,34 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
       category: "Pemeriksaan Fisik",
       questions: [
         {
-          id: "nutrition",
-          question: "Status gizi?",
+          id: "lymphNodes",
+          question: "Pembesaran kelenjar limfe (aksila, inguinal)?",
           options: [
-            { value: 0, label: "Gizi baik", points: 0 },
-            { value: 1, label: "Gizi kurang ringan", points: 1 },
-            { value: 2, label: "Gizi kurang sedang", points: 2 },
-            { value: 3, label: "Gizi kurang berat", points: 3 }
+            { value: 0, label: "Tidak ada", points: 0 },
+            { value: 1, label: "Ada, ukuran kecil (< 2cm)", points: 1 },
+            { value: 2, label: "Ada, multipel atau besar (≥ 2cm)", points: 3 }
           ]
         },
         {
-          id: "lymphNodes",
-          question: "Limfadenopati?",
+          id: "jointSwelling",
+          question: "Pembengkakan tulang/sendi (panggul, lutut, falang)?",
           options: [
             { value: 0, label: "Tidak ada", points: 0 },
-            { value: 1, label: "< 2cm, mobil", points: 1 },
-            { value: 2, label: "> 2cm atau tetap", points: 2 }
+            { value: 1, label: "Ada", points: 3 }
           ]
         }
       ]
     },
     {
-      category: "Investigasi",
+      category: "Pemeriksaan Penunjang",
       questions: [
         {
-          id: "tst",
-          question: "Hasil Tes Tuberkulin (TST)?",
-          options: [
-            { value: 0, label: "< 5mm", points: 0 },
-            { value: 1, label: "5-9mm", points: 1 },
-            { value: 2, label: "10-14mm", points: 2 },
-            { value: 3, label: "≥ 15mm", points: 3 }
-          ]
-        },
-        {
-          id: "xray",
-          question: "Temuan Foto Toraks?",
+          id: "chestXray",
+          question: "Foto toraks (rontgen dada)?",
           options: [
             { value: 0, label: "Normal", points: 0 },
-            { value: 1, label: "Pembesaran kelenjar hilus", points: 2 },
-            { value: 2, label: "Konsolidasi paru", points: 3 },
-            { value: 3, label: "Kavitasi", points: 4 }
+            { value: 1, label: "Gambaran TB tidak jelas", points: 1 },
+            { value: 2, label: "Gambaran TB jelas", points: 3 }
           ]
         }
       ]
@@ -138,10 +166,20 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
         sum + Math.max(...q.options.map(opt => opt.points)), 0
       );
       
+      // Update risk level interpretation based on IDAI guidelines
+      let riskLevel;
+      if (totalScore >= 6) {
+        riskLevel = { level: "Tinggi", color: "red" };
+      } else if (totalScore >= 4) {
+        riskLevel = { level: "Sedang", color: "yellow" };
+      } else {
+        riskLevel = { level: "Rendah", color: "green" };
+      }
+      
       const results = {
         totalScore,
         maxPossibleScore,
-        riskLevel: getRiskLevel(totalScore),
+        riskLevel,
         detailedScores: scores,
         assessmentDate: new Date().toISOString()
       };
@@ -154,12 +192,6 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
-
-  const getRiskLevel = (score) => {
-    if (score <= 3) return { level: "Rendah", color: "green" };
-    if (score <= 6) return { level: "Sedang", color: "yellow" };
-    return { level: "Tinggi", color: "red" };
   };
 
   const isAnswered = scores[currentQuestion?.id];

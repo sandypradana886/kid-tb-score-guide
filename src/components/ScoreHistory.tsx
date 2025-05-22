@@ -6,32 +6,32 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, TrendingUp, User } from "lucide-react";
 
 const ScoreHistory = ({ onBack }) => {
-  // Mock data for demonstration
+  // Updated mock data for demonstration
   const [assessmentHistory] = useState([
     {
       id: 1,
       patientId: "TB-001",
-      date: "2024-01-15",
-      score: 8,
-      maxScore: 15,
+      date: "2024-05-10",
+      score: 7,
+      maxScore: 14,
       riskLevel: "Tinggi",
       age: "5 tahun"
     },
     {
       id: 2,
       patientId: "TB-002",
-      date: "2024-01-14",
+      date: "2024-05-05",
       score: 4,
-      maxScore: 15,
+      maxScore: 14,
       riskLevel: "Sedang",
       age: "3 tahun"
     },
     {
       id: 3,
       patientId: "TB-003",
-      date: "2024-01-13",
+      date: "2024-05-01",
       score: 2,
-      maxScore: 15,
+      maxScore: 14,
       riskLevel: "Rendah",
       age: "7 tahun"
     }
@@ -57,7 +57,7 @@ const ScoreHistory = ({ onBack }) => {
                 Riwayat Penilaian
               </CardTitle>
               <CardDescription>
-                Penilaian risiko TB dan skor sebelumnya
+                Riwayat penilaian TB berdasarkan skor IDAI
               </CardDescription>
             </div>
             <Button variant="outline" onClick={onBack}>
@@ -92,14 +92,14 @@ const ScoreHistory = ({ onBack }) => {
                           Tanggal Penilaian
                         </div>
                         <p className="font-semibold">
-                          {new Date(assessment.date).toLocaleDateString()}
+                          {new Date(assessment.date).toLocaleDateString('id-ID')}
                         </p>
                       </div>
                       
                       <div>
                         <div className="flex items-center text-sm text-gray-600 mb-1">
                           <TrendingUp className="h-4 w-4 mr-1" />
-                          Skor Risiko
+                          Skor Risiko IDAI
                         </div>
                         <p className="font-semibold text-lg">
                           {assessment.score}/{assessment.maxScore}

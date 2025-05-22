@@ -29,28 +29,38 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
       case "Rendah":
         return [
           "Lanjutkan pemantauan rutin",
-          "Berikan edukasi pencegahan",
-          "Jadwalkan kontrol rutin",
-          "Pantau perkembangan gejala"
+          "Berikan edukasi pencegahan TB",
+          "Jadwalkan kontrol sesuai kebutuhan",
+          "Periksa ulang jika muncul gejala TB"
         ];
       case "Sedang":
         return [
-          "Pertimbangkan investigasi tambahan",
-          "Pemantauan ketat diperlukan",
-          "Evaluasi infeksi TB laten",
-          "Pertimbangkan terapi pencegahan",
-          "Kontrol mingguan direkomendasikan"
+          "Pertimbangkan pemeriksaan bakteriologis",
+          "Pantau perkembangan gejala secara ketat",
+          "Evaluasi untuk infeksi TB laten",
+          "Kontrol setiap 2-4 minggu",
+          "Konsultasi ke dokter spesialis anak"
         ];
       case "Tinggi":
         return [
-          "Evaluasi klinis mendesak diperlukan",
-          "Pertimbangkan pengobatan TB aktif",
-          "Tindakan isolasi jika diindikasikan",
-          "Pemeriksaan diagnostik komprehensif",
-          "Rujukan spesialis segera"
+          "Rujuk ke dokter spesialis anak segera",
+          "Pertimbangkan pemeriksaan bakteriologis menyeluruh",
+          "Mulai pengobatan OAT sesuai pedoman IDAI",
+          "Lakukan pemantauan ketat efek samping obat",
+          "Evaluasi ulang respons terapi dalam 2 minggu"
         ];
       default:
         return [];
+    }
+  };
+
+  const getInterpretation = (score) => {
+    if (score >= 6) {
+      return "Skor ≥ 6: Diagnosis TB sangat mungkin. Pengobatan OAT direkomendasikan.";
+    } else if (score >= 4) {
+      return "Skor 4-5: TB mungkin. Dibutuhkan evaluasi lebih lanjut atau pemantauan ketat.";
+    } else {
+      return "Skor < 4: Kemungkinan TB rendah. Pertimbangkan diagnosis lain.";
     }
   };
 
@@ -66,7 +76,7 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
             Hasil Penilaian
           </CardTitle>
           <CardDescription>
-            Penilaian Risiko TB Anak selesai pada {new Date(results.assessmentDate).toLocaleDateString()}
+            Penilaian Risiko TB Anak sesuai Pedoman IDAI - selesai pada {new Date(results.assessmentDate).toLocaleDateString('id-ID')}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -110,7 +120,7 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="h-5 w-5 mr-2" />
-              Skor Risiko
+              Skor Risiko TB
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -136,10 +146,10 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
         "border-l-green-500 bg-green-50"
       }`}>
         <AlertTriangle className="h-4 w-4" />
-        <AlertDescription className="font-medium">
-          {results.riskLevel.level === "Tinggi" && "Risiko TB tinggi terdeteksi. Evaluasi klinis segera direkomendasikan."}
-          {results.riskLevel.level === "Sedang" && "Risiko TB sedang. Pemantauan ketat dan evaluasi tambahan mungkin diperlukan."}
-          {results.riskLevel.level === "Rendah" && "Risiko TB rendah. Lanjutkan pemantauan rutin dan tindakan pencegahan."}
+        <AlertDescription>
+          <p className="font-medium">
+            {getInterpretation(results.totalScore)}
+          </p>
         </AlertDescription>
       </Alert>
 
