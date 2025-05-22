@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,11 +6,38 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Circle, ArrowRight, ArrowLeft } from "lucide-react";
 
+interface Option {
+  value: number;
+  label: string;
+  points: number;
+}
+
+interface Question {
+  id: string;
+  question: string;
+  options: Option[];
+  category?: string;
+}
+
+interface Category {
+  category: string;
+  questions: Question[];
+}
+
+interface Score {
+  value: number;
+  points: number;
+}
+
+interface Scores {
+  [key: string]: Score;
+}
+
 const ScoringAssessment = ({ patientData, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [scores, setScores] = useState({});
+  const [scores, setScores] = useState<Scores>({});
 
-  const assessmentCriteria = [
+  const assessmentCriteria: Category[] = [
     {
       category: "Clinical History",
       questions: [
@@ -94,7 +120,7 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
   const currentQuestion = allQuestions[currentStep];
   const progress = ((currentStep + 1) / allQuestions.length) * 100;
 
-  const handleAnswer = (questionId, value, points) => {
+  const handleAnswer = (questionId: string, value: number, points: number) => {
     setScores(prev => ({
       ...prev,
       [questionId]: { value, points }
