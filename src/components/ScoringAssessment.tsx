@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -164,21 +165,21 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
   const isAnswered = scores[currentQuestion?.id];
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between mb-4">
-            <CardTitle className="text-xl">TB Risk Assessment</CardTitle>
-            <span className="text-sm text-gray-500">
-              Question {currentStep + 1} of {allQuestions.length}
+    <div className="w-full px-2 sm:max-w-3xl sm:mx-auto">
+      <Card className="shadow-lg">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between mb-2">
+            <CardTitle className="text-lg sm:text-xl">TB Risk Assessment</CardTitle>
+            <span className="text-xs sm:text-sm text-gray-500">
+              {currentStep + 1} / {allQuestions.length}
             </span>
           </div>
-          <Progress value={progress} className="w-full" />
+          <Progress value={progress} className="h-2 w-full" />
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="font-semibold text-blue-900 mb-2">{currentQuestion?.category}</h3>
-            <p className="text-lg text-gray-900">{currentQuestion?.question}</p>
+        <CardContent className="space-y-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+            <h3 className="font-semibold text-blue-900 text-sm sm:text-base mb-1 sm:mb-2">{currentQuestion?.category}</h3>
+            <p className="text-base sm:text-lg text-gray-900">{currentQuestion?.question}</p>
           </div>
 
           <RadioGroup
@@ -189,15 +190,15 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
                 handleAnswer(currentQuestion.id, option.value, option.points);
               }
             }}
-            className="space-y-3"
+            className="space-y-2 sm:space-y-3"
           >
             {currentQuestion?.options.map((option) => (
-              <div key={option.value} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
+              <div key={option.value} className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 border rounded-lg hover:bg-gray-50">
                 <RadioGroupItem value={option.value.toString()} id={option.value.toString()} />
-                <Label htmlFor={option.value.toString()} className="flex-1 cursor-pointer">
+                <Label htmlFor={option.value.toString()} className="flex-1 cursor-pointer text-sm sm:text-base">
                   <div className="flex justify-between items-center">
                     <span>{option.label}</span>
-                    <span className="text-sm font-medium text-blue-600">
+                    <span className="text-xs sm:text-sm font-medium text-blue-600">
                       {option.points} {option.points === 1 ? 'point' : 'points'}
                     </span>
                   </div>
@@ -206,24 +207,28 @@ const ScoringAssessment = ({ patientData, onComplete }) => {
             ))}
           </RadioGroup>
 
-          <div className="flex justify-between pt-4">
+          <div className="flex justify-between pt-4 mt-2">
             <Button
               variant="outline"
               onClick={handlePrevious}
               disabled={currentStep === 0}
-              className="flex items-center"
+              className="flex items-center px-2 sm:px-4"
+              size="sm"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Previous
+              <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="text-sm">Prev</span>
             </Button>
             
             <Button
               onClick={handleNext}
               disabled={!isAnswered}
-              className="flex items-center bg-blue-600 hover:bg-blue-700"
+              className="flex items-center bg-blue-600 hover:bg-blue-700 px-2 sm:px-4"
+              size="sm"
             >
-              {currentStep === allQuestions.length - 1 ? 'Complete Assessment' : 'Next'}
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <span className="text-sm">
+                {currentStep === allQuestions.length - 1 ? 'Complete' : 'Next'}
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1 sm:ml-2" />
             </Button>
           </div>
         </CardContent>
