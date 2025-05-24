@@ -8,11 +8,17 @@ import ResultsDashboard from '@/components/ResultsDashboard';
 import ScoreHistory from '@/components/ScoreHistory';
 import GuidelinesPage from '@/components/GuidelinesPage';
 import BMICalculator from '@/components/BMICalculator';
+import LoginPage from '@/components/LoginPage';
 
 const Index = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentView, setCurrentView] = useState('home');
   const [patientData, setPatientData] = useState(null);
   const [assessmentResults, setAssessmentResults] = useState(null);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
   const handlePatientSubmit = (data) => {
     setPatientData(data);
@@ -23,6 +29,10 @@ const Index = () => {
     setAssessmentResults(results);
     setCurrentView('results');
   };
+
+  if (!isLoggedIn) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
 
   const renderCurrentView = () => {
     switch (currentView) {
