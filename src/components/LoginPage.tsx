@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Stethoscope, Eye, EyeOff, Heart, Shield, Users } from "lucide-react";
+import { Stethoscope, Heart, Shield, Users, UserCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoginPageProps {
@@ -12,31 +10,19 @@ interface LoginPageProps {
 }
 
 const LoginPage = ({ onLogin }: LoginPageProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setIsLoading(true);
 
-    // Simulasi autentikasi
+    // Simulasi proses masuk
     setTimeout(() => {
-      if (email && password) {
-        toast({
-          title: "Login Berhasil",
-          description: "Selamat datang di Sistem Penilaian TB Anak",
-        });
-        onLogin();
-      } else {
-        toast({
-          title: "Login Gagal",
-          description: "Mohon isi email dan password",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Selamat Datang!",
+        description: "Anda berhasil masuk ke Sistem Penilaian TB Anak",
+      });
+      onLogin();
       setIsLoading(false);
     }, 1500);
   };
@@ -90,83 +76,62 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
           </div>
         </div>
 
-        {/* Right Side - Login Form */}
+        {/* Right Side - Simple Login */}
         <div className="flex justify-center">
           <Card className="w-full max-w-md shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="text-center pb-4">
+            <CardHeader className="text-center pb-6">
+              <div className="mx-auto mb-4 p-3 bg-blue-100 rounded-full w-fit">
+                <UserCheck className="h-8 w-8 text-blue-600" />
+              </div>
               <CardTitle className="text-2xl font-bold text-gray-900">Masuk ke Sistem</CardTitle>
               <CardDescription className="text-gray-600">
-                Masukkan kredensial Anda untuk mengakses sistem penilaian TB anak
+                Klik tombol di bawah untuk mengakses sistem penilaian TB anak
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="dokter@rumahsakit.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-11"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Masukkan password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="h-11 pr-10"
-                      required
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-11 px-3 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-500" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-gray-500" />
-                      )}
-                    </Button>
-                  </div>
+            <CardContent className="space-y-6">
+              <div className="text-center space-y-4">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-800">
+                    <strong>Akses Mudah:</strong> Tidak perlu registrasi atau login yang rumit. 
+                    Langsung gunakan semua fitur sistem penilaian TB anak.
+                  </p>
                 </div>
 
                 <Button
-                  type="submit"
-                  className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                  onClick={handleLogin}
+                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg"
                   disabled={isLoading}
                 >
                   {isLoading ? (
                     <div className="flex items-center space-x-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                       <span>Memproses...</span>
                     </div>
                   ) : (
-                    "Masuk"
+                    <div className="flex items-center space-x-2">
+                      <UserCheck className="h-5 w-5" />
+                      <span>Masuk ke Sistem</span>
+                    </div>
                   )}
                 </Button>
-              </form>
+              </div>
+
+              <div className="text-center space-y-3">
+                <div className="flex items-center space-x-2 text-sm text-green-600">
+                  <Shield className="h-4 w-4" />
+                  <span>Akses aman dan terpercaya</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-blue-600">
+                  <Heart className="h-4 w-4" />
+                  <span>Berdasarkan pedoman medis terkini</span>
+                </div>
+              </div>
 
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <p className="text-xs text-gray-500 text-center">
-                  Dengan masuk, Anda menyetujui penggunaan sistem ini sesuai dengan 
+                  Dengan menggunakan sistem ini, Anda menyetujui penggunaan sesuai dengan 
                   <br />
-                  <span className="text-blue-600 hover:underline cursor-pointer">kebijakan privasi</span> yang berlaku
+                  <span className="text-blue-600 hover:underline cursor-pointer">kebijakan penggunaan</span> yang berlaku
                 </p>
               </div>
             </CardContent>
