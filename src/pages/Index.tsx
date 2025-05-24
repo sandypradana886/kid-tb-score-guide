@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,8 @@ import PatientForm from '@/components/PatientForm';
 import ScoringAssessment from '@/components/ScoringAssessment';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import ScoreHistory from '@/components/ScoreHistory';
+import GuidelinesPage from '@/components/GuidelinesPage';
+import BMICalculator from '@/components/BMICalculator';
 
 const Index = () => {
   const [currentView, setCurrentView] = useState('home');
@@ -44,6 +45,10 @@ const Index = () => {
         );
       case 'history':
         return <ScoreHistory onBack={() => setCurrentView('home')} />;
+      case 'guidelines':
+        return <GuidelinesPage onBack={() => setCurrentView('home')} />;
+      case 'bmi-calculator':
+        return <BMICalculator onBack={() => setCurrentView('home')} />;
       default:
         return (
           <div className="w-full px-4 space-y-6">
@@ -88,26 +93,32 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-l-4 border-l-purple-500">
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-shadow border-l-4 border-l-purple-500"
+                onClick={() => setCurrentView('guidelines')}
+              >
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 mx-auto mb-1 sm:mb-2" />
                   <CardTitle className="text-sm sm:text-lg">Pedoman</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    Pedoman WHO & CDC
+                    Pedoman WHO, CDC & IDAI
                   </CardDescription>
                 </CardContent>
               </Card>
 
-              <Card className="border-l-4 border-l-orange-500">
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-shadow border-l-4 border-l-orange-500"
+                onClick={() => setCurrentView('bmi-calculator')}
+              >
                 <CardHeader className="text-center py-3 px-2 sm:p-6">
                   <Stethoscope className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600 mx-auto mb-1 sm:mb-2" />
-                  <CardTitle className="text-sm sm:text-lg">Sumber Daya</CardTitle>
+                  <CardTitle className="text-sm sm:text-lg">Alat Klinis</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-2 sm:p-6">
                   <CardDescription className="text-center text-xs sm:text-sm">
-                    Alat klinis
+                    Kalkulator BMI
                   </CardDescription>
                 </CardContent>
               </Card>
