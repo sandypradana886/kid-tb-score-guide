@@ -1,20 +1,21 @@
-
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { 
-  AlertTriangle, 
-  CheckCircle, 
-  FileText, 
+import html2pdf from 'html2pdf.js';
+import {
+  AlertTriangle,
+  CheckCircle,
+  FileText,
   RotateCcw,
   TrendingUp,
-  User,
-  Calendar
+  User
 } from "lucide-react";
 
 const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
+  const reportRef = useRef();
+
   const getRiskColor = (level) => {
     switch (level) {
       case "Rendah": return "bg-green-100 text-green-800 border-green-200";
@@ -66,8 +67,20 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
 
   const scorePercentage = (results.totalScore / results.maxPossibleScore) * 100;
 
+  const handleDownloadPDF = () => {
+    const opt = {
+      margin: 0.5,
+      filename: `laporan-penilaian-${patientData.patientId}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(reportRef.current).outputPdf('dataurlnewwindow');
+
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6" ref={reportRef}>
       {/* Header */}
       <Card>
         <CardHeader className="text-center">
@@ -91,28 +104,11 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex justify-between">
-              <span className="font-medium">ID Pasien:</span>
-              <span>{patientData.patientId}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Usia:</span>
-              <span>{patientData.age} {patientData.ageUnit === 'years' ? 'tahun' : 'bulan'}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Jenis Kelamin:</span>
-              <span>
-                {patientData.gender === 'male' ? 'Laki-laki' : 'Perempuan'}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Berat Badan:</span>
-              <span>{patientData.weight} kg</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Tinggi Badan:</span>
-              <span>{patientData.height} cm</span>
-            </div>
+            <div className="flex justify-between"><span className="font-medium">ID Pasien:</span><span>{patientData.patientId}</span></div>
+            <div className="flex justify-between"><span className="font-medium">Usia:</span><span>{patientData.age} {patientData.ageUnit === 'years' ? 'tahun' : 'bulan'}</span></div>
+            <div className="flex justify-between"><span className="font-medium">Jenis Kelamin:</span><span>{patientData.gender === 'male' ? 'Laki-laki' : 'Perempuan'}</span></div>
+            <div className="flex justify-between"><span className="font-medium">Berat Badan:</span><span>{patientData.weight} kg</span></div>
+            <div className="flex justify-between"><span className="font-medium">Tinggi Badan:</span><span>{patientData.height} cm</span></div>
           </CardContent>
         </Card>
 
@@ -174,8 +170,8 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
       </Card>
 
       {/* Actions */}
-      <div className="flex gap-4 justify-center">
-        <Button variant="outline" onClick={() => window.print()}>
+      <div className="flex gap-4 justify-center print:hidden">
+        <Button variant="outline" onClick={handleDownloadPDF}>
           <FileText className="h-4 w-4 mr-2" />
           Cetak Laporan
         </Button>
