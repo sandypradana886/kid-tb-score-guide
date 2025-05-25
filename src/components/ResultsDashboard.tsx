@@ -173,7 +173,7 @@ const ResultsDashboard = ({ patientData, results, onNewAssessment }) => {
       <div className="flex gap-4 justify-center print:hidden">
         <Button variant="outline" onClick={handleDownloadPDF}>
           <FileText className="h-4 w-4 mr-2" />
-          Cetak Laporan
+          Unduh Laporan
         </Button>
         <Button onClick={onNewAssessment} className="bg-blue-600 hover:bg-blue-700">
           <RotateCcw className="h-4 w-4 mr-2" />
